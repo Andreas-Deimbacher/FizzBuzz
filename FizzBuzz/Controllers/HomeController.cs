@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Text;
 using LinqToTwitter;
 using System.Configuration;
+using FizzBuzz.Models;
 namespace FizzBuzz.Controllers
 {
 
@@ -15,6 +16,7 @@ namespace FizzBuzz.Controllers
         private IOAuthCredentials credentials = new SessionStateCredentials();
         private MvcAuthorizer auth;
         private static TwitterContext twitterCtx;
+        private static IndexModels indexModel;
         
 
         public ActionResult Index()
@@ -39,6 +41,8 @@ namespace FizzBuzz.Controllers
 
             /***************************************************************************/
 
+            indexModel = new IndexModels();
+
             return View();
         }
 
@@ -48,25 +52,32 @@ namespace FizzBuzz.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(int input)
+        public ActionResult Index(int? input)
         {
-            
-            /***************************** FizzBuzz  *********************************/
-            StringBuilder result = new StringBuilder();
-            if (input % 3 == 0) result.Append("Fizz");
-            if (input % 5 == 0) result.Append("Buzz");
-            if (result.Length == 0) result.Append(input);
-            
-            ViewBag.input = input.ToString();
-            ViewBag.output = result.ToString();
+            if (!input.HasValue)
+                ModelState.AddModelError("Input", "No Input Value");
 
-            /**************************Twitter post ************************************/
+            if (ModelState.IsValid)
+            {
 
-            var tweetStatus = twitterCtx.UpdateStatus(input + " is a " + result);
+                /***************************** FizzBuzz  *********************************/
+                StringBuilder result = new StringBuilder();
+                if (input % 3 == 0) result.Append("Fizz");
+                if (input % 5 == 0) result.Append("Buzz");
+                if (result.Length == 0) result.Append(input);
 
-            ViewBag.tweet = "Tweet succesfull \n" +twitterCtx.UserName + "\n" + tweetStatus.Text;
+                indexModel.Input = input;
+                indexModel.Output = result.ToString();
 
-            return View();
+
+                /**************************Twitter post ************************************/
+
+                var tweetStatus = twitterCtx.UpdateStatus(input + " is a " + result);
+
+                indexModel.tweetSend = true;
+                indexModel.TweetMessage = "Tweet succesfull \n" + twitterCtx.UserName + "\n" + tweetStatus.Text;
+            }
+            return View(indexModel);
         }
 
     }

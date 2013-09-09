@@ -1,23 +1,52 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <form action="/Home/Index" method="post">
-        <h3>Input</h3>
-        <p>@Html.TextBox("input", (string)ViewBag.input, new { onkeydown = "return ValidateNumber(event);",@placeholder="Enter number"})</p>
-        
-        <h3>Output</h3>
-        <p>@Html.TextBox("output", (string)ViewBag.ouput, new { @readonly = true, @placeholder="Result" })</p>
-        
-        <input id="btnSubmit" type="submit" value="Submit" />
-    </form>
-    <h4>Tweet status</h4>
-    <p>@Html.TextArea("tweet", (string)ViewBag.tweet, new { rows = 3, @readonly = true})</p>
-</body>
-</html>
+﻿<asp:Content ID="Title" ContentPlaceHolderID="TitleContent" runat="server">
+    FizzBuzz
+</asp:Content>
+ 
+<asp:Content ID="Index" ContentPlaceHolderID="MainContent" runat="server">
+  
+@model FizzBuzz.Models.IndexModels
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>IndexModels</legend>
+
+        <div class="editor-label">
+            @Html.Label("Input")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Input) Required
+            @Html.ValidationMessageFor(model => model.Input,"Please enter a Number")
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Output")
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Output, new { @readonly = true, @placeholder="Result" })
+            @Html.ValidationMessageFor(model => model.Output)
+        </div>
+                
+        <div class="editor-label">
+            @Html.Label("Tweet")
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.TweetMessage,new { @readonly = true})
+            @Html.ValidationMessageFor(model => model.TweetMessage)
+        </div>
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+ 
+</asp:Content>
 
 <!-- Skript for Textbox Input with Numbers-->
 <!-- 95-107 : 0-9 Number-Block-->
