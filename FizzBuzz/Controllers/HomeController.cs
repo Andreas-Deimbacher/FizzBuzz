@@ -56,7 +56,7 @@ namespace FizzBuzz.Controllers
         {
             if (!input.HasValue)
             {
-                ModelState.AddModelError("Input", "No Input Value");
+                ModelState.AddModelError("Input", "Please enter a Number");
             }
 
             if (ModelState.IsValid)
