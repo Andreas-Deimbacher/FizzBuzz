@@ -22,7 +22,7 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Input) Required
-            @Html.ValidationMessageFor(model => model.Input,"Please enter a Number")
+            @Html.ValidationMessageFor(model => model.Input)
         </div>
 
         <div class="editor-label">
@@ -47,19 +47,3 @@
 }
  
 </asp:Content>
-
-<!-- Skript for Textbox Input with Numbers-->
-<!-- 95-107 : 0-9 Number-Block-->
-<!-- 47-58 : 0-9 -->
-<!-- 8 : Backspace -->
-<!-- 13 : Enter -->
-<script type="text/javascript">
-    function ValidateNumber(e) {
-        var evt = (e) ? e : window.event;
-        var charCode = (evt.keyCode) ? evt.keyCode : evt.which;
-        if ((charCode > 95 && charCode < 107) || (charCode > 47 && charCode < 58) || charCode == 8 || charCode == 13) {
-            return true;
-        }
-        return false;
-    };
-</script>

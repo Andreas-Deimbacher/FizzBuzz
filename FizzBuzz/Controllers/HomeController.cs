@@ -17,7 +17,7 @@ namespace FizzBuzz.Controllers
         private MvcAuthorizer auth;
         private static TwitterContext twitterCtx;
         private static IndexModels indexModel;
-        
+
 
         public ActionResult Index()
         {
@@ -55,7 +55,9 @@ namespace FizzBuzz.Controllers
         public ActionResult Index(int? input)
         {
             if (!input.HasValue)
+            {
                 ModelState.AddModelError("Input", "No Input Value");
+            }
 
             if (ModelState.IsValid)
             {
